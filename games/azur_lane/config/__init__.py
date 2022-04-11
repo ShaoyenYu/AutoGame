@@ -1,6 +1,6 @@
-from pathlib import Path
+from util.io import get_caller_directory
 
-CONFIG_DIR = Path(__file__).parent
+CONFIG_DIR = get_caller_directory()
 
 DIR_BASE = CONFIG_DIR.parent.as_posix()
 DIR_INTERFACE = f"{DIR_BASE}/interface"

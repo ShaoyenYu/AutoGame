@@ -1,0 +1,447 @@
+__Proto__: # Prototype
+  - &Daily_DRE01 {
+    Name: "日常資源開發I", Duration: "1:00:00", Level: 1, Exp: 180,
+    Material: [ 50, 80 ], Oil: [ 50, 80 ], DecorToken: [ 2, 4 ],
+  }
+  - &Daily_DRE02 {
+    Name: "日常資源開發II", Duration: "2:00:00", Level: 1, Exp: 360,
+    Material: [ 100, 170 ], Oil: [ 100, 170 ], DecorToken: [ 4, 7 ],
+  }
+  - &Daily_DRE03 {
+    Name: "日常資源開發III", Duration: "1:00:00", Level: 15, Exp: 180,
+    Material: [ 60, 90 ], Oil: [ 60, 90 ], DecorToken: [ 2, 4 ],
+  }
+  - &Daily_DRE04 {
+    Name: "日常資源開發IV", Duration: "2:00:00", Level: 15, Exp: 360,
+    Material: [ 120, 200 ], Oil: [ 120, 200 ], DecorToken: [ 4, 7 ],
+  }
+  - &Daily_DRE05 {
+    Name: "日常資源開發V", Duration: "1:00:00", Level: 40, Exp: 180,
+    Material: [ 70, 100 ], Oil: [ 70, 100 ], DecorToken: [ 2, 4 ],
+  }
+  - &Daily_DRE06 {
+    Name: "日常資源開發VI", Duration: "2:00:00", Level: 40, Exp: 360,
+    Material: [ 140, 220 ], Oil: [ 140, 220 ], DecorToken: [ 4, 7 ],
+  }
+  - &Daily_ATR01 {
+    Name: "高階戰術研發I", Duration: "1:00:00", Level: 50, Exp: 180,
+    CognitiveChip: [ 10, 18 ], DecorToken: [ 2, 4 ],
+  }
+  - &Daily_ATR02 {
+    Name: "高階戰術研發II", Duration: "2:00:00", Level: 50, Exp: 360,
+    CognitiveChip: [ 24, 32 ], DecorToken: [ 4, 7 ],
+  }
+
+DailyDelegation: # Daily Delegations
+  # Daily Resource Extraction
+  - { <<: *Daily_DRE01, QuickFinisher: "?1", }
+  - { <<: *Daily_DRE01, WisdomCube: "?1", }
+  - { <<: *Daily_DRE01, SkillBook_T2: "?1", }
+  - { <<: *Daily_DRE01, RetrofitBlueprint_T1: "?1", }
+  - { <<: *Daily_DRE01, EquipmentBox_T3: "?1", }
+
+  - { <<: *Daily_DRE02, QuickFinisher: "?1", }
+  - { <<: *Daily_DRE02, WisdomCube: "?1", }
+  - { <<: *Daily_DRE02, SkillBook_T2: "?1", }
+  - { <<: *Daily_DRE02, RetrofitBlueprint_T1: "?1", }
+  - { <<: *Daily_DRE02, EquipmentBox_T3: "?1", }
+
+  - { <<: *Daily_DRE03, QuickFinisher: "?1", }
+  - { <<: *Daily_DRE03, WisdomCube: "?1", }
+  - { <<: *Daily_DRE03, SkillBook_T2: "?1", }
+  - { <<: *Daily_DRE03, RetrofitBlueprint_T1: "?1", }
+  - { <<: *Daily_DRE03, EquipmentBox_T3: "?1", }
+
+  - { <<: *Daily_DRE04, QuickFinisher: "?1", }
+  - { <<: *Daily_DRE04, WisdomCube: "?1", }
+  - { <<: *Daily_DRE04, SkillBook_T2: "?1", }
+  - { <<: *Daily_DRE04, RetrofitBlueprint_T1: "?1", }
+  - { <<: *Daily_DRE04, EquipmentBox_T3: "?1", }
+
+  - { <<: *Daily_DRE05, QuickFinisher: "?1", }
+  - { <<: *Daily_DRE05, WisdomCube: "?1", }
+  - { <<: *Daily_DRE05, SkillBook_T2: "?1", }
+  - { <<: *Daily_DRE05, RetrofitBlueprint_T1: "?1", }
+  - { <<: *Daily_DRE05, EquipmentBox_T3: "?1", }
+
+  - { <<: *Daily_DRE06, QuickFinisher: "?1", }
+  - { <<: *Daily_DRE06, WisdomCube: "?1", }
+  - { <<: *Daily_DRE06, SkillBook_T2: "?1", }
+  - { <<: *Daily_DRE06, RetrofitBlueprint_T1: "?1", }
+  - { <<: *Daily_DRE06, EquipmentBox_T3: "?1", }
+
+  # Awakening Tactical Research
+  - { <<: *Daily_ATR01, Oil: [ 50, 80 ], QuickFinisher: "?1", }
+  - { <<: *Daily_ATR01, Oil: [ 50, 80 ], WisdomCube: "?1", }
+  - { <<: *Daily_ATR01, Material: [ 50, 80 ], SkillBook_T2: "?1", }
+  - { <<: *Daily_ATR01, Material: [ 50, 80 ], RetrofitBlueprint_T1: "?1", }
+  - { <<: *Daily_ATR01, Material: [ 50, 80 ], EquipmentBox_T3: "?1", }
+
+  - { <<: *Daily_ATR02, Material: [ 100, 170 ], QuickFinisher: "?1", }
+  - { <<: *Daily_ATR02, Material: [ 100, 170 ], WisdomCube: "?1", }
+  - { <<: *Daily_ATR02, Oil: [ 100, 170 ], SkillBook_T2: "?1", }
+  - { <<: *Daily_ATR02, Oil: [ 100, 170 ], RetrofitBlueprint_T1: "?1", }
+  - { <<: *Daily_ATR02, Oil: [ 100, 170 ], EquipmentBox_T3: "?1", }
+
+ExtraDailyDelegation:
+  # Vein Protection
+  - {
+    Name: "初級礦脈護衛委託", Duration: "0:30:00", Level: 1, Exp: 60,
+    Material: [ 20, 40 ], DecorToken: [ 0, 1 ], GearPart_T1: "?",
+  }
+  - {
+    Name: "中級礦脈護衛委託", Duration: "1:00:00", Level: 15, Exp: 120,
+    Material: [ 40, 85 ], DecorToken: [ 1, 2 ], GearPart_T1: "?", GearPart_T2: "?",
+  }
+  - {
+    Name: "高級礦脈護衛委託", Duration: "1:30:00", Level: 40, Exp: 180,
+    Material: [ 70, 190 ], DecorToken: [ 2, 3 ], GearPart_T1: "?", GearPart_T2: "?", GearPart_T3: "?",
+  }
+
+  # Forest Protection
+  - {
+    Name: "初級林木護衛委託", Duration: "0:30:00", Level: 1, Exp: 60,
+    Material: [ 20, 40 ], DecorToken: [ 0, 1 ], GearPart_T1: "?",
+  }
+  - {
+    Name: "中級林木護衛委託", Duration: "1:00:00", Level: 15, Exp: 120,
+    Material: [ 40, 85 ], DecorToken: [ 1, 2 ], GearPart_T1: "?", GearPart_T2: "?",
+  }
+  - {
+    Name: "高級林木護衛委託", Duration: "1:30:00", Level: 40, Exp: 180,
+    Material: [ 70, 190 ], DecorToken: [ 2, 3 ], GearPart_T1: "?", GearPart_T2: "?", GearPart_T3: "?",
+  }
+
+  # Merchant Escort
+  - {
+    Name: "小型商船護衛", Duration: "5:00:00", Level: 1, Exp: 600,
+    Material: [ 210, 350 ], DecorToken: [ 6, 9 ], SkillBook_T1: "?",
+  }
+  - {
+    Name: "中型商船護衛", Duration: "6:00:00", Level: 15, Exp: 720,
+    Material: [ 260, 450 ], DecorToken: [ 7, 10 ], SkillBook_T1: "?", SkillBook_T2: "?",
+  }
+  - {
+    Name: "大型商船護衛", Duration: "8:00:00", Level: 40, Exp: 960,
+    Material: [ 350, 660 ], DecorToken: [ 12, 16 ], SkillBook_T1: "?", SkillBook_T2: "?", SkillBook_T3: "?",
+  }
+
+  # Range Sailing Training
+  - {
+    Name: "短距離航行訓練", Duration: "0:20:00", Level: 1, Exp: 120,
+    CognitiveChip: [ 0, 2 ], Material: [ 12, 28 ], QuickFinisher: "?",
+  }
+  - {
+    Name: "中距離航行訓練", Duration: "1:00:00", Level: 15, Exp: 380,
+    CognitiveChip: [ 2, 4 ], Material: [ 45, 75 ], QuickFinisher: "?",
+  }
+  - {
+    Name: "遠距離航行訓練", Duration: "2:00:00", Level: 40, Exp: 750,
+    CognitiveChip: [ 4, 10 ], Material: [ 90, 150 ], QuickFinisher: "?",
+  }
+
+  # Fleet Escort Exercise / Fleet Cargo Transport / Fleet Combat Exercise
+  - {
+    Name: "艦隊護衛演習", Duration: "0:30:00", Level: 1, Exp: 180, WisdomCube: "?",
+  }
+  - {
+    Name: "艦隊運輸演習", Duration: "1:30:00", Level: 15, Exp: 560, WisdomCube: "?",
+  }
+  - {
+    Name: "艦隊實戰演習", Duration: "3:00:00", Level: 40, Exp: 1120, WisdomCube: "?",
+  }
+
+  # Coastal Defense Patrol / Buoy Inspection / Frontier Defense Patrol
+  - {
+    Name: "近海防衛巡邏", Duration: "2:40:00", Level: 1, Exp: 1000,
+    CognitiveChip: [ 4, 8 ], Oil: [ 12, 28 ], ?QuickFinisher,
+  }
+  - {
+    Name: "海域浮標檢查作業", Duration: "3:20:00", Level: 15, Exp: 1250,
+    CognitiveChip: [ 8, 14 ], Oil: [ 15, 35 ], ?QuickFinisher,
+  }
+  - {
+    Name: "前沿基地防衛巡邏", Duration: "5:20:00", Level: 40, Exp: 2000,
+    CognitiveChip: [ 14, 22 ], Oil: [ 25, 55 ], ?QuickFinisher,
+  }
+
+  # Fleet Exercise
+  - {
+    Name: "艦隊初階演習", Duration: "4:00:00", Level: 1, Exp: 1500, WisdomCube: "?",
+  }
+  - {
+    Name: "艦隊中階演習", Duration: "5:00:00", Level: 15, Exp: 1800, WisdomCube: "?",
+  }
+  - {
+    Name: "艦隊高階演習", Duration: "8:00:00", Level: 40, Exp: 3000, WisdomCube: "?",
+  }
+
+  # Small Scale Oil Extraction
+  - {
+    Name: "小型油田開發I", Duration: "1:00:00", Level: 1, Exp: 120,
+    Oil: [ 15, 30 ], DecorToken: [ 0, 1 ],
+  }
+  - {
+    Name: "小型油田開發II", Duration: "1:00:00", Level: 15, Exp: 120,
+    Oil: [ 20, 40 ], DecorToken: [ 0, 2 ],
+  }
+  - {
+    Name: "小型油田開發III", Duration: "1:00:00", Level: 40, Exp: 120,
+    Oil: [ 25, 50 ], DecorToken: [ 1, 2 ],
+  }
+
+  # Mid Scale Oil Extraction
+  - {
+    Name: "中型油田開發I", Duration: "4:00:00", Level: 1, Exp: 480,
+    Oil: [ 80, 140 ], DecorToken: [ 3, 5 ],
+  }
+  - {
+    Name: "中型油田開發II", Duration: "4:00:00", Level: 15, Exp: 480,
+    Oil: [ 100, 180 ], DecorToken: [ 4, 7 ],
+  }
+  - {
+    Name: "中型油田開發III", Duration: "4:00:00", Level: 40, Exp: 480,
+    Oil: [ 120, 220 ], DecorToken: [ 5, 9 ],
+  }
+
+  # Large Scale Oil Extraction
+  - {
+    Name: "大型油田開發I", Duration: "8:00:00", Level: 1, Exp: 960,
+    Oil: [ 150, 300 ], DecorToken: [ 8, 10 ],
+  }
+  - {
+    Name: "大型油田開發II", Duration: "8:00:00", Level: 15, Exp: 960,
+    Oil: [ 200, 400 ], DecorToken: [ 10, 13 ],
+  }
+  - {
+    Name: "大型油田開發III", Duration: "8:00:00", Level: 40, Exp: 960,
+    Oil: [ 250, 500 ], DecorToken: [ 12, 16 ],
+  }
+
+UrgentDelegation:
+  # Aiding (GearPart)
+  - { # Aiding Vella Lavella
+    Name: "支援維拉維拉島", Duration: "0:30:00", Level: 1, Exp: 90, OilCost: 5, TimeLimit: "2:00:00",
+    Material: [ 50, 80 ], DecorToken: [ 1, 2 ], GearPart_T1: "?",
+  }
+  - { # Aiding Maui
+    Name: '支援"伊"島', Duration: "1:00:00", Level: 15, Exp: 180, OilCost: 10, TimeLimit: "2:00:00",
+    Material: [ 100, 170 ], DecorToken: [ 2, 4 ], GearPart_T1: "?",
+  }
+  - { # Aiding Rendova Island
+    Name: "支援多倫瓦島", Duration: "1:20:00", Level: 25, Exp: 240, OilCost: 15, TimeLimit: "5:00:00",
+    Material: [ 130, 240 ], DecorToken: [ 3, 5 ], GearPart_T2: "?",
+  }
+  - { # Aiding Kongbanna
+    Name: "支援恐班納", Duration: "1:40:00", Level: 25, Exp: 300, OilCost: 20, TimeLimit: "5:00:00",
+    Material: [ 160, 300 ], DecorToken: [ 4, 7 ], GearPart_T2: "?",
+  }
+  - { # Aiding Manne Island
+    Name: "支援馬內島", Duration: "2:00:00", Level: 60, Exp: 360, OilCost: 25, TimeLimit: "12:00:00",
+    Material: [ 190, 360 ], DecorToken: [ 5, 8 ], GearPart_T3: "?",
+  }
+  - { # Aiding Isle of Man
+    Name: "支援萌島", Duration: "2:30:00", Level: 90, Exp: 450, OilCost: 30, TimeLimit: "10:00:00",
+    Material: [ 190, 360 ], DecorToken: [ 6, 9 ], GearPart_T3: "?",
+  }
+
+  # Aiding (SkillBook)
+  - { # Aiding Tyrant's Island
+    Name: "支援土豪爾島", Duration: "0:30:00", Level: 1, Exp: 90, OilCost: 5, TimeLimit: "2:00:00",
+    Material: [ 50, 80 ], DecorToken: [ 1, 2 ], SkillBook_T1: "?2",
+  }
+  - { # Aiding Poro
+    Name: "支援姆波羅島", Duration: "1:00:00", Level: 15, Exp: 180, OilCost: 10, TimeLimit: "2:00:00",
+    Material: [ 100, 170 ], DecorToken: [ 2, 4 ], SkillBook_T1: "?2",
+  }
+  - { # Aiding Makira
+    Name: "支援馬拉基島", Duration: "1:20:00", Level: 25, Exp: 240, OilCost: 15, TimeLimit: "5:00:00",
+    Material: [ 130, 240 ], DecorToken: [ 3, 5 ], SkillBook_T2: "?2",
+  }
+  - { # Aiding Kapolo
+    Name: "支援卡波羅島", Duration: "1:40:00", Level: 25, Exp: 300, OilCost: 20, TimeLimit: "5:00:00",
+    Material: [ 160, 300 ], DecorToken: [ 4, 7 ], SkillBook_T2: "?2",
+  }
+  - { # Aiding St. Mary's Island
+    Name: "支援瑪麗島", Duration: "2:00:00", Level: 60, Exp: 360, OilCost: 25, TimeLimit: "12:00:00",
+    Material: [ 190, 360 ], DecorToken: [ 5, 8 ], SkillBook_T3: "?2",
+  }
+  - { # Aiding Kotlin Island
+    Name: "支援特林島", Duration: "2:30:00", Level: 90, Exp: 450, OilCost: 30, TimeLimit: "12:00:00",
+    Material: [ 190, 360 ], DecorToken: [ 6, 9 ], SkillBook_T3: "?2",
+  }
+
+  # Cargo Defense / Destroy Enemy (QuickFinisher)
+  - { # Cargo Defense I
+    Name: "保衛運輸部隊I", Duration: "1:00:00", Level: 1, Exp: 600, OilCost: 5, TimeLimit: "3:00:00",
+    Material: [ 50, 80 ], Oil: [ 20, 50 ], QuickFinisher: "?2",
+  }
+  - { # Destroy Enemy Scouts
+    Name: "殲滅敵偵察部隊", Duration: "1:00:00", Level: 15, Exp: 660, OilCost: 10, TimeLimit: "2:00:00",
+    Material: [ 60, 90 ], Oil: [ 25, 55 ], QuickFinisher: "?2",
+  }
+  - { # Cargo Defense II
+    Name: "保衛運輸部隊II", Duration: "1:30:00", Level: 25, Exp: 840, OilCost: 15, TimeLimit: "3:20:00",
+    Material: [ 85, 124 ], Oil: [ 40, 70 ], QuickFinisher: "?2",
+  }
+  - { # Destroy Enemy Force
+    Name: "殲滅敵主力部隊", Duration: "2:00:00", Level: 40, Exp: 1125, OilCost: 20, TimeLimit: "11:20:00",
+    Material: [ 105, 175 ], Oil: [ 60, 90 ], QuickFinisher: "?3",
+  }
+  - { # Cargo Defense III
+    Name: "保衛運輸部隊III", Duration: "2:40:00", Level: 60, Exp: 1500, OilCost: 25, TimeLimit: "17:40:00",
+    Material: [ 145, 225 ], Oil: [ 80, 120 ], QuickFinisher: "?3",
+  }
+  - { # Destroy Enemy Elites
+    Name: "殲滅敵精銳部隊", Duration: "4:00:00", Level: 90, Exp: 2250, OilCost: 30, TimeLimit: "17:40:00",
+    Material: [ 200, 360 ], Oil: [ 115, 185 ], QuickFinisher: "?4",
+  }
+
+  # Merchant Rescue / Enemy Attack (WisdomCube)
+  - { # Merchant Rescue I
+    Name: "解救商船I", Duration: "1:30:00", Level: 1, Exp: 840, OilCost: 5, TimeLimit: "3:00:00",
+    WisdomCube: "?2",
+  }
+  - { # Enemy Attack I
+    Name: "敵襲I", Duration: "1:45:00", Level: 15, Exp: 990, OilCost: 10, TimeLimit: "2:20:00",
+    WisdomCube: "?2",
+  }
+  - { # Merchant Rescue II
+    Name: "解救商船II", Duration: "2:15:00", Level: 25, Exp: 1260, OilCost: 15, TimeLimit: "3:20:00",
+    WisdomCube: "?2",
+  }
+  - { # Enemy Attack II
+    Name: "敵襲II", Duration: "3:00:00", Level: 40, Exp: 1680, OilCost: 20, TimeLimit: "11:20:00",
+    WisdomCube: "?3",
+  }
+  - { # Merchant Rescue III
+    Name: "解救商船III", Duration: "4:00:00", Level: 60, Exp: 2250, OilCost: 25, TimeLimit: "17:40:00",
+    WisdomCube: "?3",
+  }
+  - { # Enemy Attack III
+    Name: "敵襲III", Duration: "6:00:00", Level: 90, Exp: 3375, OilCost: 30, TimeLimit: "17:40:00",
+    WisdomCube: "?4",
+  }
+
+  # BIW/NYB (EquipmentBox)
+  - { # BIW Gear Transport
+    Name: "BIW裝備運輸", Duration: "1:00:00", Level: 1, Exp: 180, OilCost: 5, TimeLimit: "5:20:00",
+    Oil: [ 50, 80 ], DecorToken: [ 2, 4 ], EquipmentBox_T2: "?",
+  }
+  - { # NYB Gear Transport
+    Name: "NYB裝備運輸", Duration: "1:00:00", Level: 1, Exp: 180, OilCost: 5, TimeLimit: "5:20:00",
+    Oil: [ 50, 80 ], DecorToken: [ 2, 4 ], EquipmentBox_T2: "?",
+  }
+  - { # BIW Handover
+    Name: "BIW物資交接", Duration: "3:00:00", Level: 25, Exp: 540, OilCost: 15, TimeLimit: "11:20:00",
+    Oil: [ 160, 260 ], DecorToken: [ 7, 10 ], EquipmentBox_T3: "?",
+  }
+  - { # NYB Handover
+    Name: "NYB物資交接", Duration: "3:00:00", Level: 25, Exp: 540, OilCost: 15, TimeLimit: "11:20:00",
+    Oil: [ 160, 260 ], DecorToken: [ 7, 10 ], EquipmentBox_T3: "?",
+  }
+  - { # BIW Gear Research
+    Name: "BIW裝備研發", Duration: "6:00:00", Level: 60, Exp: 1080, OilCost: 25, TimeLimit: "6:40:00",
+    Oil: [ 360, 540 ], DecorToken: [ 15, 20 ], EquipmentBox_T4: "?",
+  }
+  - { # NYB Gear Research
+    Name: "NYB裝備研發", Duration: "6:00:00", Level: 60, Exp: 1080, OilCost: 25, TimeLimit: "6:40:00",
+    Oil: [ 360, 540 ], DecorToken: [ 15, 20 ], EquipmentBox_T4: "?",
+  }
+
+  # BIW/NYB (Gem)
+  - { # BIW VIP Escort
+    Name: "BIW要員護衛", Duration: "2:00:00", Level: 15, Exp: 360, OilCost: 10, TimeLimit: "5:20:00",
+    Oil: [ 100, 170 ], DecorToken: [ 4, 7 ], Gem: "?",
+  }
+  - { # NYB VIP Escort
+    Name: "NYB要員護衛", Duration: "2:00:00", Level: 15, Exp: 360, OilCost: 10, TimeLimit: "5:20:00",
+    Oil: [ 100, 170 ], DecorToken: [ 4, 7 ], Gem: "?"
+  }
+  - { # BIW Holiday Escort
+    Name: "BIW度假護衛", Duration: "4:00:00", Level: 40, Exp: 720, OilCost: 20, TimeLimit: "9:00:00",
+    Oil: [ 240, 360 ], DecorToken: [ 10, 14 ], Gem: "?",
+  }
+  - { # NYB Holiday Escort
+    Name: "NYB度假護衛", Duration: "42:00:00", Level: 40, Exp: 720, OilCost: 20, TimeLimit: "9:00:00",
+    Oil: [ 240, 360 ], DecorToken: [ 10, 14 ], Gem: "?",
+  }
+  - { # BIW Patrol Escort
+    Name: "BIW巡視護衛", Duration: "8:00:00", Level: 90, Exp: 1440, OilCost: 30, TimeLimit: "18:00:00",
+    Oil: [ 480, 720 ], DecorToken: [ 20, 25 ], Gem: "?",
+  }
+  - { # NYB Patrol Escort
+    Name: "NYB巡視護衛", Duration: "8:00:00", Level: 90, Exp: 1440, OilCost: 30, TimeLimit: "18:00:00",
+    Oil: [ 480, 720 ], DecorToken: [ 20, 25 ], Gem: "?",
+  }
+
+  # Ceremony (Ship)
+  - { # Small Launch Ceremony
+    Name: "小型觀艦儀式", Duration: "3:00:00", Level: 15, Exp: 1120, OilCost: 30, TimeLimit: "6:00:00",
+    Material: [ 420, 540 ], DecorToken: [ 7, 10 ], Ship_R: "?1",
+  }
+  - { # Fleet Launch Ceremony
+    Name: "聯合觀艦儀式", Duration: "6:00:00", Level: 40, Exp: 2250, OilCost: 50, TimeLimit: "12:00:00",
+    Material: 880, DecorToken: [ 15, 20 ], Ship_SR: "?1",
+  }
+  - { # Alliance Launch Ceremony
+    Name: "同盟觀艦儀式", Duration: "12:00:00", Level: 90, Exp: 4500, OilCost: 70, TimeLimit: "24:00:00",
+    Material: 1760, DecorToken: [ 30, 40 ], Ship_SSR: "?1",
+  }
+
+NightDelegation:
+  # Merchant Escort
+  - {
+    Name: "小型商船護衛", Duration: "6:00:00", Level: 1, Exp: 720, OilCost: 0, TimeLimit: "6:00:00",
+    Material: [ 260, 450 ], DecorToken: [ 7, 10 ], SkillBook_T1: "?",
+  }
+  - {
+    Name: "中型商船護衛", Duration: "7:00:00", Level: 1, Exp: 840, OilCost: 0, TimeLimit: "6:00:00",
+    Material: [ 300, 550 ], DecorToken: [ 9, 13 ], SkillBook_T2: "?",
+  }
+  - {
+    Name: "大型商船護衛", Duration: "8:00:00", Level: 1, Exp: 960, OilCost: 0, TimeLimit: "6:00:00",
+    Material: [ 350, 660 ], DecorToken: [ 12, 16 ], SkillBook_T3: "?",
+  }
+
+  # Coastal Defense Patrol / Buoy Inspection /  Frontier Defense Patrol
+  - {
+    Name: "近海防衛巡邏", Duration: "6:00:00", Level: 1, Exp: 2240, OilCost: 0, TimeLimit: "6:00:00",
+    CognitiveChip: [ 18, 24 ], Oil: [ 60, 105 ], QuickFinisher: "?",
+  }
+  - {
+    Name: "海域浮標檢查作業", Duration: "7:00:00", Level: 1, Exp: 2600, OilCost: 0, TimeLimit: "6:00:00",
+    CognitiveChip: [ 20, 28 ], Oil: [ 100, 160 ], QuickFinisher: "?",
+  }
+  - {
+    Name: "前沿基地防衛巡邏", Duration: "8:00:00", Level: 1, Exp: 3000, OilCost: 0, TimeLimit: "6:00:00",
+    CognitiveChip: [ 22, 32 ], Oil: [ 150, 230 ], QuickFinisher: "?",
+  }
+
+  # Fleet Exercise
+  - {
+    Name: "艦隊初階演習", Duration: "6:00:00", Level: 1, Exp: 2240, OilCost: 0, TimeLimit: "6:00:00",
+    WisdomCube: "?",
+  }
+  - {
+    Name: "艦隊中階演習", Duration: "7:00:00", Level: 1, Exp: 2600, OilCost: 0, TimeLimit: "6:00:00",
+    WisdomCube: "?",
+  }
+  - {
+    Name: "艦隊高階演習", Duration: "8:00:00", Level: 1, Exp: 3000, OilCost: 0, TimeLimit: "6:00:00",
+    WisdomCube: "?",
+  }
+
+  # Oil Extraction
+  - {
+    Name: "大型油田開發I", Duration: "8:00:00", Level: 1, Exp: 960, OilCost: 0, TimeLimit: "6:00:00",
+    Oil: [ 150, 300 ], DecorToken: [ 8, 10 ],
+  }
+  - {
+    Name: "大型油田開發II", Duration: "8:00:00", Level: 1, Exp: 960, OilCost: 0, TimeLimit: "6:00:00",
+    Oil: [ 200, 400 ], DecorToken: [ 10, 13 ],
+  }
+  - {
+    Name: "大型油田開發III", Duration: "8:00:00", Level: 1, Exp: 960, OilCost: 0, TimeLimit: "6:00:00",
+    Oil: [ 250, 500 ], DecorToken: [ 12, 16 ],
+  }

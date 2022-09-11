@@ -1,6 +1,6 @@
+import win32api
 import win32clipboard
 import win32con
-import win32api
 
 
 def set_text(string):

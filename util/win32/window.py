@@ -10,19 +10,25 @@ from util.win32 import T_PyCDC, win32api, win32gui, win32con, win32ui
 from util.win32.datatypes import Rect
 
 
-def parse_rgb_int2tuple(rgb_int: int):
-    return rgb_int & 0xff, (rgb_int >> 8) & 0xff, (rgb_int >> 16) & 0xff
+def parse_int_bgr2rgb(bgr_int: int) -> Tuple[int, int, int]:
+    return bgr_int & 0xff, (bgr_int >> 8) & 0xff, (bgr_int >> 16) & 0xff
 
 
-def parse_rgb_tuple2int(rgb_tuple: tuple):
+def parse_tuple_rgb2bgr(rgb_tuple: Tuple[int, int, int]):
     return rgb_tuple[0] | rgb_tuple[1] << 8 | rgb_tuple[2] << 16
 
 
-def get_pixel(hwnd_dc: int, x, y, as_int=False):
-    rgb_int = win32gui.GetPixel(hwnd_dc, x, y)
+def get_pixel_from_hwnd(hwnd_dc: int, x, y, as_int=False):
+    bgr_int = win32gui.GetPixel(hwnd_dc, x, y)
     if as_int:
-        return rgb_int
-    return parse_rgb_int2tuple(rgb_int)
+        return bgr_int
+    return parse_int_bgr2rgb(bgr_int)
+
+
+def get_pixel_from_image(image: np.ndarray, x, y, as_int=False):
+    if as_int:
+        parse_tuple_rgb2bgr(image[y, x])
+    return image[y, x]
 
 
 def create_data_bitmap(x, y, width, height, dc: T_PyCDC, cdc: T_PyCDC = None):
@@ -92,8 +98,8 @@ def screenshot(src_dc, dst_dc, x, y, width, height, form="array", save_path=None
     """
 
     Args:
-        src_dc:
-        dst_dc:
+        src_dc: PyCDC
+        dst_dc: PyCDC
         x: int
             left-top x coordinate of source
         y: int
@@ -106,7 +112,7 @@ def screenshot(src_dc, dst_dc, x, y, width, height, form="array", save_path=None
         save_path: str
 
     Returns:
-
+        PIL.Image, or np.ndarray
     """
 
     data_bitmap = create_data_bitmap(x, y, width, height, src_dc, dst_dc)  # create bitmap
@@ -200,7 +206,7 @@ class ScreenUtilityMixin:
         """
         hw_dc = win32gui.GetWindowDC(self.hwnd)
         try:
-            rgb = get_pixel(hw_dc, x, y, as_int)
+            rgb = get_pixel_from_hwnd(hw_dc, x, y, as_int)
         except pywintypes.error:  # this error occurs when using ALT + TAB, don't know how to fix.
             print("failed to get pixel, retrying...")
             win32gui.ReleaseDC(self.hwnd, hw_dc)
@@ -210,16 +216,23 @@ class ScreenUtilityMixin:
             win32gui.ReleaseDC(self.hwnd, hw_dc)
         return rgb
 
-    def pixel_from_image(self, image: np.ndarray, x, y, as_int=False):
-        raise NotImplementedError
+    @staticmethod
+    def pixel_from_image(image: np.ndarray, x, y, as_int=False):
+        return get_pixel_from_image(image, x, y, as_int=as_int)
 
 
 class MouseMixin:
     def __init__(self, hwnd):
         self.hwnd = hwnd
 
+    def activate_window(self):
+        # this is necessary on BlueStack 5.9
+        win32gui.SendMessage(self.hwnd, win32con.WM_ACTIVATE, win32con.WA_CLICKACTIVE, 0)
+
     def left_click(self, coordinate: Tuple[int, int], sleep=0):
         pos = win32api.MAKELONG(*coordinate)
+
+        self.activate_window()
         win32api.PostMessage(self.hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, pos)
         win32api.PostMessage(self.hwnd, win32con.WM_LBUTTONUP, 0, pos)
 

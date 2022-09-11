@@ -5,15 +5,12 @@ import cv2
 from Levenshtein import ratio
 from paddleocr import PaddleOCR
 
-from lib.dummy_paddleocr import load_recognizer
 from games.azur_lane.config import CONFIG_DELEGATION
-from games.azur_lane.controller.scene import (
-    am, match_multi_template, debug_show
-)
-from util import gen_key, logging
+from games.azur_lane.interface.scene.asset_manager import am
+from lib.dummy_paddleocr import load_recognizer
+from util import gen_key
+from util.game_cv import match_multi_template, debug_show
 from util.io import load_yaml
-
-logging.logger.setLevel("WARN")
 
 re.search(r".*?(\D+)", "123:A").group(1)
 

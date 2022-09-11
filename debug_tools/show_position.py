@@ -6,7 +6,7 @@ import pyautogui as pag
 from pynput import keyboard
 
 from util.win32 import common, monitor, win32gui
-from util.win32.window import parse_rgb_int2tuple, parse_rgb_tuple2int
+from util.win32.window import parse_int_bgr2rgb, parse_tuple_rgb2bgr
 
 monitor.set_process_dpi_awareness(2, silent=True)
 
@@ -35,7 +35,7 @@ class PixelDetector:
                 rgb_int = None
         elif cls.config["method"] == 2:
             try:
-                rgb_int = parse_rgb_tuple2int(pag.pixel(*coordinate))
+                rgb_int = parse_tuple_rgb2bgr(pag.pixel(*coordinate))
             except OSError:
                 rgb_int = None
             except Exception:
@@ -52,7 +52,7 @@ class PixelDetector:
         coordinate_client = win32gui.ScreenToClient(hwnd_client, coordinate_global)
 
         rgb_int = cls.get_pixel_rgb(coordinate_client, hwnd_client)
-        rgb_tuple = parse_rgb_int2tuple(rgb_int) if rgb_int is not None else None
+        rgb_tuple = parse_int_bgr2rgb(rgb_int) if rgb_int is not None else None
 
         cls.cur_pixel_info.update(
             hwnd_client=hwnd_client,

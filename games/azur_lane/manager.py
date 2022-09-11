@@ -2,14 +2,13 @@ import time
 from threading import Thread
 
 from games.azur_lane import logger_azurlane
-from games.azur_lane.interface.scene import *
-from games.azur_lane.task import *
+from games.azur_lane.interface.scene import SCENES_REGISTERED, SceneUnknown
+from games.azur_lane.task import TASKS_REGISTERED
 from util.window import GameWindow
 
 
 class SceneManager:
-    SCENES_REGISTERED = {x.name: x for x in globals().values() if type(x) is Scene.__class__ and issubclass(x, Scene)}
-
+    SCENES_REGISTERED = SCENES_REGISTERED
     logger = logger_azurlane
 
     def __init__(self, game_window: GameWindow):
@@ -23,7 +22,7 @@ class SceneManager:
 
     def refresh_scene(self):
         while True:
-            self.detect_scene()
+            self._refresh_scene()
             time.sleep(self.config["interval"])
 
     @property
@@ -41,18 +40,18 @@ class SceneManager:
         has_arrived = self.scene_cur.goto(self.window, dest := self.SCENES_REGISTERED[scene_name], sleep, *args, **kws)
         return has_arrived
 
-    def update_scenes(self, scene_cur, scene_prev=None):
+    def _refresh_scene(self):
+        self._update_scene(scene_cur=self._recognize_scene(self.window))
+        return self.window.scene_cur
+
+    def _update_scene(self, scene_cur, scene_prev=None):
         if self.window.scene_cur.at(scene_cur):
             return
         self.window.scene_prev, self.window.scene_cur = scene_prev or self.window.scene_cur, scene_cur
         self.logger.info(f"switch scene ({self.window.scene_prev} --> {self.window.scene_cur})")
 
-    def detect_scene(self):
-        self.update_scenes(self._detect_scene(self.window))
-        return self.window.scene_cur
-
     @classmethod
-    def _detect_scene(cls, window):
+    def _recognize_scene(cls, window):
         for scene in cls.SCENES_REGISTERED.values():
             if hasattr(scene, "at_this_scene") and scene.at_this_scene(window):
                 return scene
@@ -60,9 +59,7 @@ class SceneManager:
 
 
 class TaskManager:
-    TASKS_REGISTERED = {
-        x.name: x for x in globals().values() if type(x) is BaseTask.__class__ and issubclass(x, BaseTask)
-    }
+    TASKS_REGISTERED = TASKS_REGISTERED
 
     def __init__(self, game_window: GameWindow):
         self.game_window = game_window

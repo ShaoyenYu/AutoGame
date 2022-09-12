@@ -67,12 +67,14 @@ class BaseTask:
     mkdir = False
 
     state = {}
+    pause_events = (
+        "can_run", "can_run_after_battle"
+    )
     config = ConfigManager()
-    event_handler = PauseEventHandler("can_run")
     logger = logger_azurlane
 
     def __init__(self, window: GameWindow = None):
-        self.event_handler = PauseEventHandler("can_run")
+        self.event_handler = PauseEventHandler(*self.pause_events)
         self.window = window
 
         self.base_dir = f"{DIR_USR_AUTO_GAME_AZURLANE}/{self.name}"
@@ -81,6 +83,9 @@ class BaseTask:
 
     def start(self) -> None:
         self.event_handler.resume()
+
+    def reverse(self, event_names):
+        self.event_handler.reverse(event_names)
 
     @property
     def scene_cur(self):

@@ -10,6 +10,7 @@ class Namespace:
     popup_campaign_info = "Popup.Campaign.Info"
     scene_battle_formation = "Scene.Battle.Formation"
     scene_battle = "Scene.Battle"
+    scene_battle_loading = "Scene.BattleLoading"
     popup_get_ship = "Popup.GetShip"
     scene_battle_checkpoint_00 = "Scene.Battle.Checkpoint_00"
     scene_battle_checkpoint_01 = "Scene.Battle.Checkpoint_01"

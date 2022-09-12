@@ -3,8 +3,9 @@ from games.azur_lane.interface.scene.base import Scene, goto_scene_main
 from games.azur_lane.interface.scene.name import Namespace
 
 __all__ = [
-    "SceneBattle", "SceneBattleCheckpoint00", "SceneBattleCheckpoint01", "SceneBattleResult",
-    "SceneBattleFormation"
+    "SceneBattle", "SceneBattleLoading",
+    "SceneBattleCheckpoint00", "SceneBattleCheckpoint01", "SceneBattleResult",
+    "SceneBattleFormation",
 ]
 
 
@@ -66,6 +67,17 @@ class SceneBattle(Scene):
     def at_this_scene_impl(cls, window) -> bool:
         points_to_check = am.eigens(
             "Battle.Button_Pause",
+        )
+        return cls.compare_with_pixels(window, points_to_check)
+
+
+class SceneBattleLoading(Scene):
+    name = Namespace.scene_battle_loading
+
+    @classmethod
+    def at_this_scene_impl(cls, window) -> bool:
+        points_to_check = am.eigens(
+            "Battle.BattleLoading",
         )
         return cls.compare_with_pixels(window, points_to_check)
 

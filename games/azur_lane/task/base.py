@@ -2,7 +2,7 @@ from pathlib import Path
 
 from games.azur_lane import logger_azurlane
 from games.azur_lane.config import DIR_USR_AUTO_GAME_AZURLANE
-from util.concurrent import KillableThread, PauseEventHandler
+from util.concurrent import PauseEventHandler
 from util.window import GameWindow
 
 
@@ -62,7 +62,7 @@ class ConfigManager:
             print(f"  {cfg}")
 
 
-class BaseTask(KillableThread):
+class BaseTask:
     name = ""
     mkdir = False
 
@@ -72,7 +72,6 @@ class BaseTask(KillableThread):
     logger = logger_azurlane
 
     def __init__(self, window: GameWindow = None):
-        KillableThread.__init__(self)
         self.event_handler = PauseEventHandler("can_run")
         self.window = window
 
@@ -82,11 +81,6 @@ class BaseTask(KillableThread):
 
     def start(self) -> None:
         self.event_handler.resume()
-        super().start()
-
-    def stop(self):
-        if self.is_alive():
-            self.terminate()
 
     @property
     def scene_cur(self):

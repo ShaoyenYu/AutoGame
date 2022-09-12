@@ -26,11 +26,12 @@ def switch_scene(window: GameWindow, scene_from, scene_to):
 
 
 class Config:
-    def __init__(self, name, value=None, default_value=None, introduction=""):
+    def __init__(self, name, value=None, default_value=None, introduction="", value_type=str):
         self.name = name
-        self.value = value
+        self.value = value_type(value) if value is not None else None
         self.default_value = default_value
         self.introduction = introduction
+        self.value_type = value_type
 
     def __repr__(self):
         return f"config name {self.name}, value {self.value}"
@@ -52,7 +53,7 @@ class ConfigManager:
             if config.value is not None:
                 continue
             input_value = source(f"Set config {config_name}: ") or config.default_value
-            config.value = input_value
+            config.value = config.value_type(input_value)
         self.show_configs()
 
     def show_configs(self):
@@ -65,7 +66,8 @@ class BaseTask(KillableThread):
     name = ""
     mkdir = False
 
-    config_manager = ConfigManager()
+    state = {}
+    config = ConfigManager()
     event_handler = PauseEventHandler("can_run")
     logger = logger_azurlane
 

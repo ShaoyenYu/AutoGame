@@ -37,6 +37,7 @@ class SceneCampaignChapter(Scene):
     @classmethod
     def at_this_scene_impl(cls, window) -> bool:
         points_to_check = am.eigens(
+            "CampaignChapter.Button_DailyTask",
             "CampaignChapter.Label_WeighAnchor",
             "Main.Icon_Resources.Icon_Oil",
             "Main.Icon_Resources.Icon_Money",

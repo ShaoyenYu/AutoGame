@@ -182,6 +182,8 @@ AnchorAweigh:
   Icon_Resources: *Icon_Resources
 
 CampaignChapter:
+  Button_DailyTask:
+    __Eigen: [[1248, 986, 16777215], [1286, 985, 16777215], [1312, 992, 16777215], [1364, 1002, 16777215]] # 文字 - 每日任务
   Label_WeighAnchor: *Label_WeighAnchor
   Label_TotalRewards_without_META:
     __Eigen: [

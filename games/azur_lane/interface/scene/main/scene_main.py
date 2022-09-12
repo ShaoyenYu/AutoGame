@@ -158,11 +158,11 @@ class SceneAnchorAweigh(Scene):
     @classmethod
     def at_this_scene_impl(cls, window) -> bool:
         points_to_check = am.eigens(
+            "AnchorAweigh.Button_MainBattleLine",
+            "AnchorAweigh.Label_WeighAnchor",
             "AnchorAweigh.Icon_Resources.Icon_Oil",
             "AnchorAweigh.Icon_Resources.Icon_Money",
             "AnchorAweigh.Icon_Resources.Icon_Diamond",
-            "AnchorAweigh.Button_MainBattleLine",
-            "AnchorAweigh.Label_WeighAnchor",
         )
         return cls.compare_with_pixels(window, points_to_check)
 

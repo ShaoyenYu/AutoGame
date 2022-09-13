@@ -171,6 +171,10 @@ class SceneAnchorAweigh(Scene):
         window.left_click(am.rect("AnchorAweigh.Button_MainBattleLine"), sleep=1)
 
     @classmethod
+    def goto_scene_campaign_special(cls, window):
+        window.left_click(am.rect("AnchorAweigh.Button_CampaignSpecial"), sleep=1)
+
+    @classmethod
     def open_popup_rescue_sos(cls, window):
         window.left_click(am.rect("AnchorAweigh.Button_RescueSOS"), sleep=1)
 
@@ -185,5 +189,6 @@ class SceneAnchorAweigh(Scene):
     ways = {
         Namespace.scene_main: goto_scene_main,
         Namespace.scene_campaign_chapter: goto_scene_campaign_chapter,
-        Namespace.popup_rescue_sos: open_popup_rescue_sos
+        Namespace.scene_campaign_special: goto_scene_campaign_special,
+        Namespace.popup_rescue_sos: open_popup_rescue_sos,
     }

@@ -9,8 +9,8 @@ from games.azur_lane.interface.scene.name import Namespace
 from util.game_cv import slice_image, binarize, find_most_match
 
 __all__ = [
-    "SceneCampaignChapter", "PopupStageInfo", "PopupFleetSelection", "PopupFleetSelectionArbitrate",
-    "PopupFleetSelectionFixed", "PopupFleetSelectionDuty", "PopupRescueSOS"
+    "SceneCampaignChapter", "SceneCampaignSpecial", "PopupRescueSOS", "PopupStageInfo",
+    "PopupFleetSelection", "PopupFleetSelectionArbitrate", "PopupFleetSelectionFixed", "PopupFleetSelectionDuty",
 ]
 
 
@@ -37,6 +37,7 @@ class SceneCampaignChapter(Scene):
     @classmethod
     def at_this_scene_impl(cls, window) -> bool:
         points_to_check = am.eigens(
+            "CampaignChapter.Button_RescueSOS",
             "CampaignChapter.Button_DailyTask",
             "CampaignChapter.Label_WeighAnchor",
             "Main.Icon_Resources.Icon_Oil",
@@ -77,6 +78,24 @@ class SceneCampaignChapter(Scene):
         Namespace.scene_anchor_aweigh: goto_scene_main,
         Namespace.popup_stage_info: open_stage_popup
     }
+
+
+class SceneCampaignSpecial(Scene):
+    name = Namespace.scene_campaign_special
+
+    @classmethod
+    def at_this_scene_impl(cls, window) -> bool:
+        points_to_check = am.eigens(
+            "CampaignChapter.Button_DailyTask",
+            "CampaignChapter.Label_WeighAnchor",
+            "Main.Icon_Resources.Icon_Oil",
+            "Main.Icon_Resources.Icon_Money",
+            "Main.Icon_Resources.Icon_Diamond",
+        )
+        points_to_check_false = am.eigens(
+            "CampaignChapter.Button_RescueSOS",
+        )
+        return cls.compare_with_pixels(window, points_to_check) and not cls.compare_with_pixels(window, points_to_check_false)
 
 
 class PopupStageInfo(Scene):

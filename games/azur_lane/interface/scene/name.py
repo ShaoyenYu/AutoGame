@@ -24,3 +24,4 @@ class Namespace:
     popup_campaign_reward = "Popup.Campaign.Reward"
     popup_campaign_reward_meta = "Popup.Campaign.RewardWithMeta"
     scene_campaign_chapter = "Scene.Campaign.Chapter"
+    scene_campaign_special = "Scene.Campaign.Special"

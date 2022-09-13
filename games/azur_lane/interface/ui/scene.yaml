@@ -157,6 +157,9 @@ AnchorAweigh:
       [ 665, 668, 16777215 ], [ 654, 720, 16777215 ], [ 681, 735, 16777215 ], [ 739, 743, 16777215 ], # 文字 - 线
     ]
 
+  Button_CampaignSpecial:
+    __Rect: [ [ 818, 180, 2691080 ], [ 1448, 487, 2954760 ] ]
+
   Button_RescueSOS:
     __Rect: [ [ 1534, 668, 7565675 ], [ 1617, 751, 8089467 ], ]
     __ImageRect: [ [ 1567, 692, 5393738 ], [ 1599, 734, 5921114 ], ]
@@ -184,6 +187,8 @@ AnchorAweigh:
 CampaignChapter:
   Button_DailyTask:
     __Eigen: [ [ 1248, 986, 16777215 ], [ 1286, 985, 16777215 ], [ 1312, 992, 16777215 ], [ 1364, 1002, 16777215 ] ] # 文字 - 每日任务
+  Button_RescueSOS:
+    __Eigen: [ [ 1852, 761, 16777215 ], [ 1754, 807, 16777215 ], ]
   Label_WeighAnchor: *Label_WeighAnchor
   Label_TotalRewards_without_META:
     __Eigen: [

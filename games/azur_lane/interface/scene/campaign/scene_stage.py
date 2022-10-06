@@ -9,8 +9,8 @@ from games.azur_lane.interface.scene.name import Namespace
 from util.game_cv import slice_image, binarize, find_most_match
 
 __all__ = [
-    "SceneCampaignChapter", "SceneCampaignSpecial", "PopupRescueSOS", "PopupStageInfo",
-    "PopupFleetSelection", "PopupFleetSelectionArbitrate", "PopupFleetSelectionFixed", "PopupFleetSelectionDuty",
+    "SceneCampaignChapter", "SceneCampaignSpecial", "SceneCampaignActivity", "PopupRescueSOS", "PopupStageInfo",
+    "PopupFleetSelectionArbitrate", "PopupFleetSelectionFixed", "PopupFleetSelectionDuty",
 ]
 
 
@@ -31,8 +31,12 @@ class SceneCampaignChapter(Scene):
         "馬里亞納風雲上": 12,
         "馬里亞納風雲下": 13,
     }
-    unique_chars = "".join(sorted(set("".join(map_chapter_names.keys()))))
     chapter_no = None
+
+    @classmethod
+    def _unique_chars(cls):
+        unique_chars = "".join(sorted(set("".join(cls.map_chapter_names.keys()))))
+        return unique_chars
 
     @classmethod
     def at_this_scene_impl(cls, window) -> bool:
@@ -58,7 +62,7 @@ class SceneCampaignChapter(Scene):
         x, y, w, h = am.get_image_xywh("CampaignChapter.Chapters.ChapterNo")
         image_processed = slice_image(binarize(window.screenshot(x, y, w, h), thresh=128))
 
-        ocr_paddle.set_valid_chars(cls.unique_chars)
+        ocr_paddle.set_valid_chars(cls._unique_chars())
         ocr_text = ocr_paddle(cv2.cvtColor(image_processed, cv2.COLOR_GRAY2RGB))[0][0]
         res = find_most_match(ocr_text, cls.map_chapter_names.keys())[0]
         if res is None:
@@ -80,8 +84,11 @@ class SceneCampaignChapter(Scene):
     }
 
 
-class SceneCampaignSpecial(Scene):
+class SceneCampaignSpecial(SceneCampaignChapter):
     name = Namespace.scene_campaign_special
+    map_chapter_names = {
+        "峽灣間的星辰": "峽灣間的星辰"
+    }
 
     @classmethod
     def at_this_scene_impl(cls, window) -> bool:
@@ -96,6 +103,37 @@ class SceneCampaignSpecial(Scene):
             "CampaignChapter.Button_RescueSOS",
         )
         return cls.compare_with_pixels(window, points_to_check) and not cls.compare_with_pixels(window, points_to_check_false)
+
+    @classmethod
+    def open_stage_popup(cls, window, chapter_no=None):
+        chapter_name, stage_no = chapter_no.split("-")
+        window.left_click(am.rect(f"CampaignSpecial.{chapter_name}.Stages.{stage_no}"))
+
+
+class SceneCampaignActivity(SceneCampaignChapter):
+    name = Namespace.scene_campaign_activity
+    map_chapter_names = {
+        "碧海光粼下篇": "碧海光粼下篇"
+    }
+
+    @classmethod
+    def at_this_scene_impl(cls, window) -> bool:
+        points_to_check = am.eigens(
+            "CampaignChapter.Label_WeighAnchor",
+            "Main.Icon_Resources.Icon_Oil",
+            "Main.Icon_Resources.Icon_Money",
+            "Main.Icon_Resources.Icon_Diamond",
+            "CampaignActivity.Button_EXSP"
+        )
+        points_to_check_false = am.eigens(
+            "CampaignChapter.Button_RescueSOS",
+        )
+        return cls.compare_with_pixels(window, points_to_check) and not cls.compare_with_pixels(window, points_to_check_false)
+
+    @classmethod
+    def open_stage_popup(cls, window, chapter_no=None):
+        chapter_name, stage_no = chapter_no.split("-")
+        window.left_click(am.rect(f"CampaignActivity.{chapter_name}.Stages.{stage_no}"))
 
 
 class PopupStageInfo(Scene):
@@ -150,7 +188,10 @@ class PopupFleetSelection(Scene):
             "PopupFleetSelect.Label_FleetSelect",
             "PopupFleetSelect.Label_Marine",
         )
-        return cls.compare_with_pixels(window, points_to_check)
+        points_to_check_false = am.eigens(
+            "PopupFleetSelect.Label_DutyTag",
+        )
+        return cls.compare_with_pixels(window, points_to_check) and not cls.compare_with_pixels(window, points_to_check_false)
 
     @classmethod
     def goto_immediate_start(cls, window):
@@ -218,9 +259,13 @@ class PopupFleetSelectionDuty(PopupFleetSelection):
 
     @classmethod
     def at_this_scene_impl(cls, window) -> bool:
-        duties = cls.show_duty(window)
-
-        return duties != 0b0 and super().at_this_scene_impl(window)
+        points_to_check = am.eigens(
+            "PopupFleetSelect.Label_FleetSelect",
+            "PopupFleetSelect.Label_Marine",
+            "PopupFleetSelect.Label_DutyTag",
+        )
+        # return cls.compare_with_pixels(window, points_to_check) and duties != 0b0
+        return cls.compare_with_pixels(window, points_to_check)
 
     @classmethod
     def show_duty(cls, window):
@@ -239,23 +284,24 @@ class PopupFleetSelectionDuty(PopupFleetSelection):
         for idx, state in enumerate(
                 ("Button_StandBy", "Button_AllBattle", "Button_Flagship", "Button_NormalBattle"), start=2
         ):
-            if cls.compare_with_pixels(window, am.eigens(f"{btn}.NormalFleet.{state}")) is True:
+            if cls.compare_with_pixels(window, am.eigens(f"{btn}.NormalFleet.{state}")):
                 res |= (0b1 << idx)
 
         return res
 
     @classmethod
     def set_duty_marine(cls, window, team_one) -> bool:
-        btn_marine = am.resolve("PopupFleetSelect.Button_ChangeDuty.NormalFleet")
         duty_marines = {
-            0b1000: btn_marine["Button_NormalBattle"],
-            0b0100: btn_marine["Button_Flagship"],
-            0b0010: btn_marine["Button_AllBattle"],
-            0b0001: btn_marine["Button_StandBy"],
+            0b1000: "Button_NormalBattle",
+            0b0100: "Button_Flagship",
+            0b0010: "Button_AllBattle",
+            0b0001: "Button_StandBy",
         }
         if (duty_marine := duty_marines.get(team_one)) is None:
             return False
-        window.left_click(duty_marine, sleep=.75)
+
+        btn_marine = am.rect(f"PopupFleetSelect.Button_ChangeDuty.NormalFleet.{duty_marine}")
+        window.left_click(btn_marine, sleep=.75)
         return (cls.show_duty(window) >> 2) == team_one
 
     @classmethod

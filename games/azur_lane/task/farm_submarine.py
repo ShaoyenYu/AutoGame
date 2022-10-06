@@ -25,7 +25,6 @@ class TaskFarmSubmarineSOS(BaseTask):
             elif self.remain_rescue_times == 0:
                 print("finished.")
                 self.scene_cur.goto(self.window, scene.SceneMain)
-                self.stop()
 
     @wait("can_run")
     def popup_rescue_sos_to_campaign_chapter(self):

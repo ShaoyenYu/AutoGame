@@ -30,6 +30,7 @@ class SceneCampaignChapter(Scene):
         "奧古斯塔皇后灣海戰": 11,
         "馬里亞納風雲上": 12,
         "馬里亞納風雲下": 13,
+        "蘇里高夜戰": 14,
     }
     chapter_no = None
 
@@ -113,7 +114,9 @@ class SceneCampaignSpecial(SceneCampaignChapter):
 class SceneCampaignActivity(SceneCampaignChapter):
     name = Namespace.scene_campaign_activity
     map_chapter_names = {
-        "碧海光粼下篇": "碧海光粼下篇"
+        "碧海光粼下篇": "碧海光粼下篇",
+        "箱庭療法下篇": "箱庭疗法下篇",
+        "地秘密遺跡群島·採集地": "炼金术士与秘密遗迹群岛",
     }
 
     @classmethod

@@ -19,14 +19,18 @@ class TaskFarmChapter(BaseTask):
 
         self.config.set_all(
             Config("team_one", None, default_value="4,5", introduction="Fleet to use for team one"),
+            Config("team_two", None, default_value="6", introduction="Fleet to use for team two"),
             Config("target_stage", None, default_value="13-4", introduction="Target stage to farm"),
+            Config("duty_01", None, default_value="8", introduction="Team one duty"),
             Config("max_farm_time", None, default_value=20, introduction="Max times to farm", value_type=int),
-            Config("base_dir", None, default_value=f"{self.base_dir}", introduction="Basic directory to save results")
+            Config("base_dir", None, default_value=f"{self.base_dir}", introduction="Basic directory to save results"),
         )
         self.config.set_config_from_input()
 
         self.state.update(**{
             "team_one": deque((int(x) for x in self.config["team_one"].split(","))),
+            "team_two": deque((int(x) for x in self.config["team_two"].split(","))),
+            "duty_01": deque((int(x) for x in self.config["duty_01"].split(","))),
             "cur_chapter": None,
             "cur_farm_time": 0,
         })
@@ -64,14 +68,25 @@ class TaskFarmChapter(BaseTask):
             self.scene_cur.goto(self.window, scene.PopupStageInfo, sleep=1, chapter_no=self.config["target_stage"])
 
     @wait("can_run")
-    def from_stage_info_to_campaign(self):
+    def from_stage_info_to_fleet_selection(self):
         if self.scene_cur.at(scene.PopupStageInfo):
             self.scene_cur.set_automation(self.window, turn_on=True)
             self.scene_cur.goto(self.window, scene.PopupFleetSelectionArbitrate)
 
+    @wait("can_run")
+    def from_fleet_selection_to_duty_selection(self):
         if self.scene_cur.at(scene.PopupFleetSelectionArbitrate):
-            self.state["team_one"].append(cur_team := self.state["team_one"].popleft())
-            self.scene_cur.choose_team(self.window, team_one=cur_team, team_two=6)
+            self.state["team_one"].append(cur_team_one := self.state["team_one"].popleft())
+            self.state["team_two"].append(cur_team_two := self.state["team_two"].popleft())
+            self.scene_cur.choose_team(self.window, team_one=cur_team_one, team_two=cur_team_two)
+
+            self.scene_cur.goto(self.window, scene.PopupFleetSelectionDuty)
+
+    @wait("can_run")
+    def from_duty_selection_to_campaign(self):
+        if self.scene_cur.at(scene.PopupFleetSelectionDuty):
+            self.state["duty_01"].append(cur_duty_01 := self.state["duty_01"].popleft())
+            self.scene_cur.set_duty_marine(self.window, team_one=cur_duty_01)
             self.scene_cur.goto(self.window, scene.SceneCampaign)
 
     @wait("can_run")
@@ -103,9 +118,11 @@ class TaskFarmChapter(BaseTask):
 
     def execute(self):
         self.scene_main_to_scene_anchor_aweigh()
-        self.from_anchor_aweigh_to_campaign_chapter(target_chapter_no=13)
+        self.from_anchor_aweigh_to_campaign_chapter(target_chapter_no=int(self.config["target_stage"].split("-")[0]))
         self.from_campaign_chapter_to_stage_info()
-        self.from_stage_info_to_campaign()
+        self.from_stage_info_to_fleet_selection()
+        self.from_fleet_selection_to_duty_selection()
+        self.from_duty_selection_to_campaign()
         self.wait_for_farming()
         self.save_result()
         self.from_campaign_info_to_campaign()

@@ -1,9 +1,9 @@
 import datetime as dt
 import time
-from collections import deque
 
 from games.azur_lane.interface import scene
 from games.azur_lane.task.base import BaseTask, wait, switch_scene, Config
+from util.controller.component import CyclicQueue
 from util.window import GameWindow
 
 __all__ = ["TaskFarmChapter"]
@@ -28,9 +28,9 @@ class TaskFarmChapter(BaseTask):
         self.config.set_config_from_input()
 
         self.state.update(**{
-            "team_one": deque((int(x) for x in self.config["team_one"].split(","))),
-            "team_two": deque((int(x) for x in self.config["team_two"].split(","))),
-            "duty_01": deque((int(x) for x in self.config["duty_01"].split(","))),
+            "team_one": CyclicQueue(self.config["team_one"]),
+            "team_two": CyclicQueue(self.config["team_two"]),
+            "duty_01": CyclicQueue(self.config["duty_01"]),
             "cur_chapter": None,
             "cur_farm_time": 0,
         })
@@ -76,17 +76,17 @@ class TaskFarmChapter(BaseTask):
     @wait("can_run")
     def from_fleet_selection_to_duty_selection(self):
         if self.scene_cur.at(scene.PopupFleetSelectionArbitrate):
-            self.state["team_one"].append(cur_team_one := self.state["team_one"].popleft())
-            self.state["team_two"].append(cur_team_two := self.state["team_two"].popleft())
-            self.scene_cur.choose_team(self.window, team_one=cur_team_one, team_two=cur_team_two)
+            self.scene_cur.choose_team(
+                self.window,
+                team_one=self.state["team_one"].next(), team_two=self.state["team_two"].next(),
+            )
 
             self.scene_cur.goto(self.window, scene.PopupFleetSelectionDuty)
 
     @wait("can_run")
     def from_duty_selection_to_campaign(self):
         if self.scene_cur.at(scene.PopupFleetSelectionDuty):
-            self.state["duty_01"].append(cur_duty_01 := self.state["duty_01"].popleft())
-            self.scene_cur.set_duty_marine(self.window, team_one=cur_duty_01)
+            self.scene_cur.set_duty_marine(self.window, team_one=self.state["duty_01"].next())
             self.scene_cur.goto(self.window, scene.SceneCampaign)
 
     @wait("can_run")

@@ -4,28 +4,10 @@ from pathlib import Path
 
 from games.azur_lane.interface import scene
 from games.azur_lane.task.base import BaseTask, wait, switch_scene, Config
+from util.controller.component import CyclicQueue
 from util.window import GameWindow
 
 __all__ = ["TaskFarmCampaignSpecial"]
-
-
-class CyclicQueue:
-    def __init__(self, it):
-        self.it = it
-        self.length = len(self.it)
-        self.it_cyclic = self.cyclic_iter()
-
-    def cyclic_iter(self):
-        i = 0
-        while True:
-            yield self.it[i]
-            i = (i + 1) % self.length
-
-    def next(self):
-        return next(self.it_cyclic)
-
-    def __next__(self):
-        return next(self.it_cyclic)
 
 
 def split_as_ints(comma_string):
@@ -50,10 +32,10 @@ class TaskFarmCampaignSpecial(BaseTask):
         self.config.set_config_from_input()
 
         self.state.update(**{
-            "team_01": CyclicQueue(split_as_ints(self.config["team_01"])),
-            "team_02": CyclicQueue(split_as_ints(self.config["team_02"])),
-            "duty_01": CyclicQueue(split_as_ints(self.config["duty_01"])),
-            "target_stage": CyclicQueue(self.config["target_stage"].split(",")),
+            "team_01": CyclicQueue(self.config["team_01"]),
+            "team_02": CyclicQueue(self.config["team_02"]),
+            "duty_01": CyclicQueue(self.config["duty_01"]),
+            "target_stage": CyclicQueue(self.config["target_stage"]),
             "cur_farm_time": 0,
         })
 

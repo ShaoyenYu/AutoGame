@@ -4,7 +4,7 @@ from util.controller.simulator import Bluestack
 if __name__ == '__main__':
     bs = Bluestack("BS_AzurLane")
     bs.gateway.start()
-    task_available = {"1": "FarmChapter", "2": "FarmSubmarineSOS"}
+    task_available = {"1": "FarmChapter", "2": "FarmSubmarineSOS", "3": "TaskFarmCampaignSpecial"}
     logger_azurlane.info(f"Available tasks: {task_available}")
 
     while True:

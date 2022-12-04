@@ -1,5 +1,6 @@
 import datetime as dt
 import time
+from pathlib import Path
 
 from games.azur_lane.interface import scene
 from games.azur_lane.task.base import BaseTask, wait, switch_scene, Config
@@ -52,13 +53,20 @@ class TaskFarmCampaignSpecial(BaseTask):
             "team_01": CyclicQueue(split_as_ints(self.config["team_01"])),
             "team_02": CyclicQueue(split_as_ints(self.config["team_02"])),
             "duty_01": CyclicQueue(split_as_ints(self.config["duty_01"])),
+            "target_stage": CyclicQueue(self.config["target_stage"].split(",")),
             "cur_farm_time": 0,
         })
 
+        self.cur_target_stage = None
+
+    @property
+    def save_dir(self):
         # hotfix
-        from pathlib import Path
-        self.save_dir = Path(f"{self.base_dir}/{self.config['base_dir']}/{self.config['target_stage']}")
-        Path(self.save_dir).mkdir(parents=True, exist_ok=True)
+        save_dir = Path(f"{self.base_dir}/{self.config['base_dir']}")
+        if self.cur_target_stage is not None:
+            save_dir = save_dir / f"{self.cur_target_stage}"
+        Path(save_dir).mkdir(parents=True, exist_ok=True)
+        return save_dir
 
     @wait("can_run")
     def scene_main_to_scene_anchor_aweigh(self):
@@ -72,9 +80,11 @@ class TaskFarmCampaignSpecial(BaseTask):
     def from_campaign_chapter_to_stage_info(self):
         if self.scene_cur.at(scene.SceneCampaignSpecial) or self.scene_cur.at(scene.SceneCampaignActivity):
             chapter_name = self.scene_cur.recognize_chapter_title(self.window)
+
+            self.cur_target_stage = self.state['target_stage'].next()
             self.scene_cur.goto(
                 self.window, scene.PopupStageInfo, sleep=1,
-                chapter_no=f"{chapter_name}-{self.config['target_stage']}"
+                chapter_no=f"{chapter_name}-{self.cur_target_stage}"
             )
 
     @wait("can_run")
@@ -89,6 +99,10 @@ class TaskFarmCampaignSpecial(BaseTask):
             cur_team_01, cur_team_02 = self.state["team_01"].next(), self.state["team_02"].next()
             self.scene_cur.choose_team(self.window, team_one=cur_team_01, team_two=cur_team_02)
             self.scene_cur.goto(self.window, scene.PopupFleetSelectionDuty)
+        elif self.scene_cur.at(scene.PopupFleetSelectionFixed):
+            self.scene_cur.goto(self.window, scene.PopupFleetSelectionDuty)
+        else:
+            raise
 
     @wait("can_run")
     def from_duty_selection_to_campaign(self):

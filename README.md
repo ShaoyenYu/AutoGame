@@ -14,6 +14,12 @@ This framework is based on:
 + Auto farming with default template tasks & Custom python script
 + Image recognition (scenes/texts)
 
+#### How to use
++ set android simulator to full screen(1920*1080)
++ python AutoGame/games/azur_lane/entry.py
+
+
+
 <img src="https://i.imgur.com/hyhsmmt.gif?raw=ture" width=720 height=405>
 
 ## 👀 Road Map

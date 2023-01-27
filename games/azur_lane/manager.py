@@ -51,7 +51,7 @@ class SceneManager:
         if self.window.scene_cur.at(scene_cur):
             return
         self.window.scene_prev, self.window.scene_cur = scene_prev or self.window.scene_cur, scene_cur
-        self.logger.info(f"switch scene ({self.window.scene_prev} --> {self.window.scene_cur})")
+        self.logger.debug(f"switch scene ({self.window.scene_prev} --> {self.window.scene_cur})")
 
     @classmethod
     def _recognize_scene(cls, window):

@@ -253,6 +253,10 @@ CampaignSpecial:
     Stages:
       SP3:
         __Rect: [ [ 1306, 791, 3220513 ], [ 1645, 839, 4336689 ], ]
+  夜幕下的歸途:
+    Stages:
+      SP3:
+        __Rect: [ [1300, 437, 5955575], [1617, 501, 3744801], ]
 
 CampaignActivity:
   Button_EXSP:

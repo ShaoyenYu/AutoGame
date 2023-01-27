@@ -24,7 +24,7 @@ class TaskFarmCampaignSpecial(BaseTask):
         self.config.set_all(
             Config("team_01", None, default_value="0", introduction="Fleet to use for team one"),
             Config("team_02", None, default_value="1", introduction="Fleet to use for team two"),
-            Config("duty_01", None, default_value="8,4", introduction="Tea, one duty"),
+            Config("duty_01", None, default_value="8,4", introduction="Team one duty"),
             Config("target_stage", None, default_value="B3", introduction="Target stage to farm"),
             Config("max_farm_time", None, default_value="20", introduction="Max times to farm", value_type=int),
             Config("base_dir", None, default_value=f"{self.base_dir}", introduction="Basic directory to save results")
@@ -83,14 +83,13 @@ class TaskFarmCampaignSpecial(BaseTask):
             self.scene_cur.goto(self.window, scene.PopupFleetSelectionDuty)
         elif self.scene_cur.at(scene.PopupFleetSelectionFixed):
             self.scene_cur.goto(self.window, scene.PopupFleetSelectionDuty)
-        else:
-            raise
 
     @wait("can_run")
     def from_duty_selection_to_campaign(self):
         if self.scene_cur.at(scene.PopupFleetSelectionDuty):
             self.scene_cur.set_duty_marine(self.window, team_one=self.state["duty_01"].next())
             self.scene_cur.show_duty(self.window)
+            self.logger.info(f"🔥Go to stage! (Next Farm Times: {self.state['cur_farm_time'] + 1})")
             self.scene_cur.goto(self.window, scene.SceneCampaign)
 
     @wait("can_run")
@@ -118,8 +117,9 @@ class TaskFarmCampaignSpecial(BaseTask):
         self.window.screenshot(x, y, w, h, save_path=file)
         self.state["cur_farm_time"] += 1
         self.scene_cur.goto(self.window, scene.SceneCampaign, sleep=1)
-        self.logger.info(f"Current Farm Times: {self.state['cur_farm_time']}")
+        self.logger.info(f"💡Current Farm Times: {self.state['cur_farm_time']}")
         self.event_handler.wait("can_run_after_battle")
+        self.logger.info(f"💡Sleep for a while ~")
 
     def execute(self):
         self.scene_main_to_scene_anchor_aweigh()

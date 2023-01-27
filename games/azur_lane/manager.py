@@ -1,3 +1,4 @@
+import signal
 import time
 from multiprocessing import SimpleQueue
 
@@ -50,7 +51,7 @@ class SceneManager:
         if self.window.scene_cur.at(scene_cur):
             return
         self.window.scene_prev, self.window.scene_cur = scene_prev or self.window.scene_cur, scene_cur
-        self.logger.info(f"switch scene ({self.window.scene_prev} --> {self.window.scene_cur})")
+        self.logger.debug(f"switch scene ({self.window.scene_prev} --> {self.window.scene_cur})")
 
     @classmethod
     def _recognize_scene(cls, window):
@@ -120,6 +121,8 @@ class TaskManager:
 
 
 class InputAdapter:
+    MSG_EXIT_PROGRAM = 0
+
     MSG_CAN_RUN_AFTER_BATTLE = 1
     MSG_CAN_RUN = 2
 
@@ -140,6 +143,7 @@ class InputAdapter:
         self.keyboard_listener.start()
 
     def close(self):
+        self.queue.put(self.MSG_EXIT_PROGRAM)
         self.keyboard_listener.stop()
 
 
@@ -152,6 +156,7 @@ class Gateway:
         self.task_manager = TaskManager(self.window)
         self.scene_manager = SceneManager(self.window)
         self.message_handler = KillableThread(target=self.handle_message)
+        self.signal_handler = signal.signal(signal.SIGINT, self.handle_signal)
 
     # consume input messages and change task status
     def handle_message(self):
@@ -161,6 +166,10 @@ class Gateway:
         }
         while True:
             msg = self.message_queue.get()
+
+            if msg == 0:
+                break
+
             if (msg_trans := translation.get(msg)) is not None:
                 task_instance, _ = self.task_manager.get_current_task()
                 if task_instance is None:
@@ -175,7 +184,11 @@ class Gateway:
 
     def close(self):
         self.input_adapter.close()
+        self.message_queue.close()
         self.scene_manager.close()
         self.task_manager.close()
-        self.message_handler.terminate()
         logger_azurlane.info("Gateway Terminated.")
+
+    def handle_signal(self, signum, frame):
+        self.close()
+        exit(0)

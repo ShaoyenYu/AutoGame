@@ -88,7 +88,8 @@ class SceneCampaignChapter(Scene):
 class SceneCampaignSpecial(SceneCampaignChapter):
     name = Namespace.scene_campaign_special
     map_chapter_names = {
-        "峽灣間的星辰": "峽灣間的星辰"
+        "峽灣間的星辰": "峽灣間的星辰",
+        "夜幕下的歸途": "夜幕下的歸途",
     }
 
     @classmethod

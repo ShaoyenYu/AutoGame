@@ -127,13 +127,14 @@ class PopupCampaignInfo(Scene):
     @classmethod
     def at_this_scene_impl(cls, window) -> bool:
         points_to_check = am.eigens(
-            "Campaign.Popup_Information",
+            "Popups.Information.Style_002",
+            "Popups.Information.Style_002.Button_Ensure",
         )
         return cls.compare_with_pixels(window, points_to_check)
 
     @classmethod
     def goto_campaign(cls, window):
-        window.left_click(am.rect("Campaign.Popup_Information.Button_Exit"), sleep=.75)
+        window.left_click(am.rect("Popups.Information.Style_002.Button_Exit"), sleep=.75)
 
     ways = {
         Namespace.scene_campaign: goto_campaign

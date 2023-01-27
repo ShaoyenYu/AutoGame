@@ -11,8 +11,8 @@ DIR_PADDLEOCR = Path(paddleocr.__file__).parent
 
 def prepare_default_args(lang="chinese_cht", rec_algo="RARE") -> Namespace:
     if lang == "chinese_cht":
-        det_model_dir = f"{DIR_PROJECT}/lib/dummy_paddleocr/inferences/chinese_cht/ch_ppocr_mobile_v2.0_det_infer"
-        rec_model_dir = f"{DIR_PROJECT}/lib/dummy_paddleocr/inferences/chinese_cht/ch_ppocr_mobile_v2.0_rec_infer"
+        det_model_dir = f"{DIR_PROJECT}/lib/dummy_paddleocr/inferences/chinese_cht/ch_ppocr_mobile_v3.0_det_infer"
+        rec_model_dir = f"{DIR_PROJECT}/lib/dummy_paddleocr/inferences/chinese_cht/ch_ppocr_mobile_v3.0_rec_infer"
         cls_model_dir = f"{DIR_PROJECT}/lib/dummy_paddleocr/inferences/chinese_cht/ch_ppocr_mobile_v2.0_cls_infer"
 
         rec_char_dict_path = f"{DIR_PADDLEOCR}/ppocr/utils/dict/chinese_cht_dict.txt"
@@ -20,7 +20,7 @@ def prepare_default_args(lang="chinese_cht", rec_algo="RARE") -> Namespace:
         e2e_char_dict_path = f'{DIR_PADDLEOCR}/ppocr/utils/ic15_dict.txt'
 
         default_text_recognizer_args = Namespace(
-            use_gpu=False, ir_optim=True, use_tensorrt=False, min_subgraph_size=15, precision='fp32', gpu_mem=500,
+            use_gpu=False, use_npu=False, use_xpu=False, ir_optim=True, use_tensorrt=False, min_subgraph_size=15, precision='fp32', gpu_mem=500,
             det_model_dir=det_model_dir,
             det_algorithm='DB',
             det_limit_side_len=960, det_limit_type='max', det_db_thresh=0.3, det_db_box_thresh=0.6,
@@ -45,6 +45,7 @@ def prepare_default_args(lang="chinese_cht", rec_algo="RARE") -> Namespace:
             enable_mkldnn=False, cpu_threads=10, use_pdserving=False, warmup=False,
             draw_img_save_dir='./inference_results', save_crop_res=False, use_mp=False,
             total_process_num=1, process_id=0, benchmark=False, show_log=True, use_onnx=False,
+
         )
     else:
         raise NotImplementedError

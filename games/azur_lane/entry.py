@@ -1,8 +1,8 @@
 from games.azur_lane import logger_azurlane
-from util.controller.simulator import Bluestack
+from util.controller.simulator import BlueStack
 
 if __name__ == '__main__':
-    bs = Bluestack("BS_AzurLane")
+    bs = BlueStack("BS_AzurLane")
     bs.gateway.start()
     task_available = {"1": "FarmChapter", "2": "FarmSubmarineSOS", "3": "TaskFarmCampaignSpecial", "4": "TaskAutoLogin"}
     logger_azurlane.info(f"Available tasks: {task_available}")

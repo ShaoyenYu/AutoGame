@@ -5,5 +5,6 @@ from .farm_chapter import *
 from .farm_submarine import *
 
 TASKS_REGISTERED = {
-    x.name: x for x in globals().values() if type(x) is BaseTask.__class__ and issubclass(x, BaseTask)
+    x.name: x for x in globals().values()
+    if type(x) is type and issubclass(x, BaseTask) and getattr(x, "name") != ""
 }

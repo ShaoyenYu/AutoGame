@@ -13,13 +13,7 @@ class TaskAutoLogin(BaseTask):
     def __init__(self, window: GameWindow):
         super().__init__(window)
 
-    def from_popup_info_to_scene_login(self):
-        if self.scene_cur.at(scene.PopupInformationStyle001):
-            res = self.scene_cur.recognize_text(self.window)
-            print(res)
-            if res == 0:
-                switch_scene(self.window, scene.PopupInformationStyle001, scene.SceneLoginByAccount)
-
+    # main logic
     def from_scene_login_by_account_to_scene_loging_by_third_party(self):
         switch_scene(self.window, scene.SceneLoginByAccount, scene.SceneLoginByThirdParty)
 
@@ -33,12 +27,23 @@ class TaskAutoLogin(BaseTask):
     def from_scene_login_to_scene_main(self):
         switch_scene(self.window, scene.SceneLogin, scene.SceneMain)
 
+    # exceptions
+    def from_popup_update_hint_to_scene_scene_unknown(self):
+        switch_scene(self.window, scene.PopupUpdateHint, scene.SceneUnknown)
+
+    def from_popup_info_to_scene_login(self):
+        if self.scene_cur.at(scene.PopupInformationStyle001):
+            if self.scene_cur.recognize_text(self.window) == 0:
+                switch_scene(self.window, scene.PopupInformationStyle001, scene.SceneLoginByAccount)
+
     def execute(self):
-        self.from_popup_info_to_scene_login()
         self.from_scene_login_by_account_to_scene_loging_by_third_party()
         self.from_scene_loging_by_third_party_to_scene_login_by_google()
         self.from_scene_login_by_google_to_choose_account()
         self.from_scene_login_to_scene_main()
+
+        self.from_popup_info_to_scene_login()
+        self.from_popup_update_hint_to_scene_scene_unknown()
 
     def run(self) -> None:
         while True:

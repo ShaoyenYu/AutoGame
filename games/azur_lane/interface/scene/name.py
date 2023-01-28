@@ -1,4 +1,5 @@
 class Namespace:
+    scene_unknown = "Scene.Unknown"
     popup_info_auto_battle = "Popup.Info.AutoBattle"
     scene_main = "Scene.Main"
     popup_commission = "Popup.Commission"
@@ -10,6 +11,7 @@ class Namespace:
     scene_login_by_account = "Scene.LoginByAccount"
     scene_login_by_third_party = "Scene.LoginByThirdParty"
     scene_login_by_google = "Scene.LoginByGoogle"
+    popup_update_hint = "Popup.UpdateHint"
     scene_campaign = "Scene.Campaign"
     popup_information_s001 = "Popup.Information.Stype_001"
     popup_campaign_info = "Popup.Campaign.Info"

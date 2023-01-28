@@ -5,6 +5,7 @@ from paddleocr import PaddleOCR
 
 from games.azur_lane import logger_azurlane
 from games.azur_lane.interface.scene.asset_manager import am
+from games.azur_lane.interface.scene.name import Namespace
 from lib.dummy_paddleocr import load_recognizer
 from util import game_cv
 from util.proto import TwoDimArrayLike
@@ -136,4 +137,4 @@ class Scene(SceneRecognizer, SceneRouter, metaclass=SceneMeta):
 
 
 class SceneUnknown(Scene):
-    name = "Scene.Unknown"
+    name = Namespace.scene_unknown

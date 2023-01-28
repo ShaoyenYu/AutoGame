@@ -4,7 +4,8 @@ from games.azur_lane.interface.scene.name import Namespace
 from util.game_cv import slice_image, binarize, find_most_match
 
 __all__ = [
-    "SceneLogin", "SceneLoginByAccount", "SceneLoginByThirdParty", "SceneLoginByGoogle", "PopupInformationStyle001",
+    "SceneLogin", "SceneLoginByAccount", "SceneLoginByThirdParty", "SceneLoginByGoogle",
+    "PopupInformationStyle001", "PopupUpdateHint"
 ]
 
 
@@ -86,6 +87,25 @@ class SceneLoginByGoogle(Scene):
 
     ways = {
         Namespace.scene_login_by_google: choose_account,
+    }
+
+
+class PopupUpdateHint(Scene):
+    name = Namespace.popup_update_hint
+
+    @classmethod
+    def at_this_scene_impl(cls, window) -> bool:
+        points_to_check = am.eigens(
+            "Login.UpdateHint",
+        )
+        return cls.compare_with_pixels(window, points_to_check)
+
+    @classmethod
+    def press_ok(cls, window):
+        window.left_click(am.rect("Login.UpdateHint.Button_OK"), sleep=.75)
+
+    ways = {
+        Namespace.scene_unknown: press_ok,
     }
 
 

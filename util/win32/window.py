@@ -285,7 +285,21 @@ class MouseMixin:
             time.sleep(sleep)
 
 
-class Window(ScreenUtilityMixin, MouseMixin):
+class KeyboardMixin:
+    def __init__(self, hwnd):
+        self.hwnd = hwnd
+
+    def activate_window(self):
+        # this is necessary on BlueStack 5.9
+        win32gui.SendMessage(self.hwnd, win32con.WM_ACTIVATE, win32con.WA_CLICKACTIVE, 0)
+
+    def press_key(self, key, extra=0):
+        # self.activate_window()
+        win32api.PostMessage(self.hwnd, win32con.WM_KEYDOWN, key, extra)
+        win32api.PostMessage(self.hwnd, win32con.WM_KEYUP, key, extra)
+
+
+class Window(ScreenUtilityMixin, MouseMixin, KeyboardMixin):
     def __init__(self, **kwargs):
         """
 

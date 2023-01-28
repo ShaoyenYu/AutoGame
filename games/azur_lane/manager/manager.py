@@ -2,13 +2,14 @@ import signal
 import time
 from multiprocessing import SimpleQueue
 
-from pynput import keyboard
-
 from games.azur_lane import logger_azurlane
 from games.azur_lane.interface.scene import SCENES_REGISTERED, SceneUnknown
+from games.azur_lane.manager.input_adapter import KeyboardInputMixin
 from games.azur_lane.task import TASKS_REGISTERED
 from util.concurrent import KillableThread
 from util.window import GameWindow
+
+__all__ = ["SceneManager", "TaskManager", "Gateway"]
 
 
 class SceneManager:
@@ -106,11 +107,15 @@ class TaskManager:
         for task_name, (task_instance, task_executor) in self.executors.items():
             logger_azurlane.info(f"{task_name} [{'Alive' if task_executor.is_alive() else 'Unknown'}]")
 
-    def get_current_task(self):
+    def list_alive_task(self):
         for task_name, (task_instance, task_executor) in self.executors.items():
             if task_executor.is_alive():
                 return task_instance, task_executor
         return None, None
+
+    @classmethod
+    def list_all_task(cls):
+        return tuple(task_name for task_name in cls.TASKS_REGISTERED)
 
     def close(self):
         task_list = list(self.executors.keys())
@@ -120,41 +125,25 @@ class TaskManager:
             self.executors.pop(k)
 
 
-class InputAdapter:
-    MSG_EXIT_PROGRAM = 0
-
-    MSG_CAN_RUN_AFTER_BATTLE = 1
-    MSG_CAN_RUN = 2
-
-    def __init__(self, queue):
-        self.queue = queue
-        self.keyboard_listener = keyboard.Listener(on_release=self._on_keyboard_release)
-
-    def _on_keyboard_release(self, key):
-        if key is keyboard.Key.f9:
-            self._put_message(self.MSG_CAN_RUN_AFTER_BATTLE)
-        elif key is keyboard.Key.f10:
-            self._put_message(self.MSG_CAN_RUN)
-
-    def _put_message(self, message):
-        self.queue.put(message)
-
-    def start(self):
-        self.keyboard_listener.start()
-
-    def close(self):
-        self.queue.put(self.MSG_EXIT_PROGRAM)
-        self.keyboard_listener.stop()
-
-
 class Gateway:
-    def __init__(self, game_window):
-        self.message_queue = SimpleQueue()
+    """
+    The Gateway class is used for organizing all the managers/handler:
+        `input_adapter` is used for receive and adapt all the messages from different sources(keyboard/mobile)
+        `task_manager` is used for manage the task the instance status(launch, stop, ...)
+        `scene_manager` is used for recognizing the interface of the window, and map it to the game scene
+        `message_handler` is used for handle the messages received
+        `signal_handler` is used for handling system signal
+    """
 
+    def __init__(self, game_window):
         self.window = game_window
-        self.input_adapter = InputAdapter(self.message_queue)
+        self.message_queue = None
+
+        self.input_adapter = KeyboardInputMixin()
+
         self.task_manager = TaskManager(self.window)
         self.scene_manager = SceneManager(self.window)
+
         self.message_handler = KillableThread(target=self.handle_message)
         self.signal_handler = signal.signal(signal.SIGINT, self.handle_signal)
 
@@ -171,16 +160,18 @@ class Gateway:
                 break
 
             if (msg_trans := translation.get(msg)) is not None:
-                task_instance, _ = self.task_manager.get_current_task()
+                task_instance, _ = self.task_manager.list_alive_task()
                 if task_instance is None:
                     logger_azurlane.info("No task is running currently.")
                     continue
                 task_instance.reverse(msg_trans)
 
     def start(self):
-        self.input_adapter.start()
+        self.message_queue = SimpleQueue()
+        self.input_adapter.start(self.message_queue)
         self.scene_manager.start()
         self.message_handler.start()
+        logger_azurlane.info("Gateway Started.")
 
     def close(self):
         self.input_adapter.close()

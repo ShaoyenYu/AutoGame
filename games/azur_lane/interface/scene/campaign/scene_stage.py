@@ -4,7 +4,7 @@ from typing import Union
 import cv2
 
 from games.azur_lane.interface.scene.asset_manager import am
-from games.azur_lane.interface.scene.base import Scene, goto_scene_main, ocr_paddle, auto_retry
+from games.azur_lane.interface.scene.base import Scene, goto_scene_main, ocr_origin, auto_retry
 from games.azur_lane.interface.scene.name import Namespace
 from util.game_cv import slice_image, binarize, find_most_match
 
@@ -63,8 +63,7 @@ class SceneCampaignChapter(Scene):
         x, y, w, h = am.get_image_xywh("CampaignChapter.Chapters.ChapterNo")
         image_processed = slice_image(binarize(window.screenshot(x, y, w, h), thresh=128))
 
-        ocr_paddle.set_valid_chars(cls._unique_chars())
-        ocr_text = ocr_paddle(cv2.cvtColor(image_processed, cv2.COLOR_GRAY2RGB))[0][0]
+        ocr_text = ocr_origin.ocr(cv2.cvtColor(image_processed, cv2.COLOR_GRAY2RGB))[0][0][1][0]
         res = find_most_match(ocr_text, cls.map_chapter_names.keys())[0]
         if res is None:
             raise ValueError

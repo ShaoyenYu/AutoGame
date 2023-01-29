@@ -5,9 +5,8 @@ import numpy as np
 from cv2 import TM_SQDIFF_NORMED
 
 from games.azur_lane.interface.scene.asset_manager import am
-from games.azur_lane.interface.scene.base import Scene, auto_retry, goto_scene_main
+from games.azur_lane.interface.scene.base import Scene, auto_retry, goto_scene_main, ocr_origin
 from games.azur_lane.interface.scene.name import Namespace
-from lib.dummy_paddleocr import load_recognizer
 from util.game_cv import match_multi_template, binarize, debug_show
 from util.game_cv.ocr import ocr_int, ocr_preprocess
 
@@ -52,8 +51,10 @@ class SceneMain(Scene):
 
 class PopupCommission(Scene):
     name = Namespace.popup_commission
-    ocr_int = load_recognizer()
-    ocr_int.set_valid_chars("0123456789完成前往:")
+    # from lib.dummy_paddleocr import load_recognizer
+    # ocr_int = load_recognizer()
+    # ocr_int.set_valid_chars("0123456789完成前往:")
+    ocr_int = ocr_origin
 
     @classmethod
     def at_this_scene_impl(cls, window) -> bool:
@@ -94,7 +95,7 @@ class PopupCommission(Scene):
             x_base, y_base = x_rb_area + x_anchor, y_rb_area + y_anchor
             image = window.screenshot(x_base + rel_x_rt, y_base + rel_y_rt, w_rt, h_rt)
             image_processed = binarize(image, thresh=155)
-            text = cls.ocr_int(cv2.cvtColor(image_processed, cv2.COLOR_GRAY2RGB))[0][0]
+            text = cls.ocr_int.ocr(cv2.cvtColor(image_processed, cv2.COLOR_GRAY2RGB))[0][0][1][0]
 
             text = re.sub(r":+", r":", text)  # rectify if ":" appears more than once
 

@@ -6,13 +6,11 @@ from paddleocr import PaddleOCR
 from games.azur_lane import logger_azurlane
 from games.azur_lane.interface.scene.asset_manager import am
 from games.azur_lane.interface.scene.name import Namespace
-from lib.dummy_paddleocr import load_recognizer
 from util import game_cv
 from util.proto import TwoDimArrayLike
 from util.win32.window import parse_int_bgr2rgb
 
-ocr_origin = PaddleOCR(use_angle_cls=True, lang='chinese_cht')
-ocr_paddle = load_recognizer()
+ocr_origin = PaddleOCR(use_angle_cls=True, lang='chinese_cht', show_log=False)
 
 
 def goto_scene_main(window):

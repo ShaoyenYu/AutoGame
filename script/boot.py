@@ -27,5 +27,6 @@ def set_to_fullscreen(simulator: BlueStack):
 
 def launch(window_name, launch_cmd):
     simulator = initialize_simulator(window_name, launch_cmd)
+    time.sleep(3)
     set_to_fullscreen(simulator)
     return simulator

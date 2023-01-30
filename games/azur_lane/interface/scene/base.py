@@ -17,25 +17,6 @@ def goto_scene_main(window):
     window.left_click(am.rect("AnchorAweigh.Button_BackToMain"), sleep=1)
 
 
-def auto_retry(max_retry, retry_interval=.1):
-    def _auto_retry(f):
-        def wrapper(*args, **kwargs):
-            try:
-                return f(*args, **kwargs)
-            except:
-                for _ in range(max_retry):
-                    try:
-                        return f(*args, **kwargs)
-                    except:
-                        time.sleep(retry_interval)
-                        continue
-                return None
-
-        return wrapper
-
-    return _auto_retry
-
-
 class SceneMeta(type):
     def __repr__(cls):
         return f"{cls.__name__}"

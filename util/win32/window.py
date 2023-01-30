@@ -3,9 +3,9 @@ from typing import Optional, Tuple
 
 import cv2 as cv
 import numpy as np
-import pywintypes
 from PIL import Image
 
+from util import auto_retry
 from util.win32 import T_PyCDC, win32api, win32gui, win32con, win32ui
 from util.win32.datatypes import Rect
 
@@ -205,15 +205,11 @@ class ScreenUtilityMixin:
 
         """
         hw_dc = win32gui.GetWindowDC(self.hwnd)
-        try:
-            rgb = get_pixel_from_hwnd(hw_dc, x, y, as_int)
-        except pywintypes.error:  # this error occurs when using ALT + TAB, don't know how to fix.
-            print("failed to get pixel, retrying...")
-            win32gui.ReleaseDC(self.hwnd, hw_dc)
-            time.sleep(.1)
-            rgb = self.pixel_from_window(x, y, as_int)
-        else:
-            win32gui.ReleaseDC(self.hwnd, hw_dc)
+        rgb = auto_retry(max_retry=100, retry_interval=.1)(get_pixel_from_hwnd)(hw_dc, x, y, as_int)
+        win32gui.ReleaseDC(self.hwnd, hw_dc)
+
+        if rgb is None:
+            rgb = 0 if as_int else (0, 0, 0)
         return rgb
 
     @staticmethod

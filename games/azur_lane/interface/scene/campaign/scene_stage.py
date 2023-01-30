@@ -4,8 +4,9 @@ from typing import Union
 import cv2
 
 from games.azur_lane.interface.scene.asset_manager import am
-from games.azur_lane.interface.scene.base import Scene, goto_scene_main, ocr_origin, auto_retry
+from games.azur_lane.interface.scene.base import Scene, goto_scene_main, ocr_origin
 from games.azur_lane.interface.scene.name import Namespace
+from util import auto_retry
 from util.game_cv import slice_image, binarize, find_most_match
 
 __all__ = [

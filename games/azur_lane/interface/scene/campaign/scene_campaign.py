@@ -5,8 +5,9 @@ import numpy as np
 from cv2 import TM_SQDIFF_NORMED
 
 from games.azur_lane.interface.scene.asset_manager import am
-from games.azur_lane.interface.scene.base import Scene, goto_scene_main, auto_retry
+from games.azur_lane.interface.scene.base import Scene, goto_scene_main
 from games.azur_lane.interface.scene.name import Namespace
+from util import auto_retry
 from util.game_cv import match_multi_template, combine_similar_points
 from util.game_cv.ocr import ocr_int, ocr_preprocess
 

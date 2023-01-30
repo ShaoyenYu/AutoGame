@@ -1,9 +1,8 @@
 from pynput import keyboard
+from core.input_adapter import const
 
 
 class KeyboardInputMixin:
-    MSG_EXIT_PROGRAM = 0
-
     MSG_CAN_RUN_AFTER_BATTLE = 1
     MSG_CAN_RUN = 2
 
@@ -13,9 +12,9 @@ class KeyboardInputMixin:
 
     def _on_keyboard_release(self, key):
         if key is keyboard.Key.f9:
-            self._put_message(self.MSG_CAN_RUN_AFTER_BATTLE)
+            self._put_message(const.MSG_CAN_RUN_AFTER_BATTLE)
         elif key is keyboard.Key.f10:
-            self._put_message(self.MSG_CAN_RUN)
+            self._put_message(const.MSG_CAN_RUN)
 
     def _put_message(self, message):
         self.queue.put(message)
@@ -29,5 +28,5 @@ class KeyboardInputMixin:
         self.keyboard_listener.start()
 
     def close(self):
-        self.queue.put(self.MSG_EXIT_PROGRAM)
+        self.queue.put(const.MSG_EXIT_PROGRAM)
         self.keyboard_listener.stop()

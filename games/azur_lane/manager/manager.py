@@ -2,9 +2,9 @@ import signal
 import time
 from multiprocessing import SimpleQueue
 
+from core.input_adapter import KeyboardInputMixin, const
 from games.azur_lane import logger_azurlane
 from games.azur_lane.interface.scene import SCENES_REGISTERED, SceneUnknown
-from games.azur_lane.manager.input_adapter import KeyboardInputMixin
 from games.azur_lane.task import TASKS_REGISTERED
 from util.concurrent import KillableThread
 from util.window import GameWindow
@@ -150,8 +150,8 @@ class Gateway:
     # consume input messages and change task status
     def handle_message(self):
         translation = {
-            self.input_adapter.MSG_CAN_RUN_AFTER_BATTLE: "can_run_after_battle",
-            self.input_adapter.MSG_CAN_RUN: "can_run",
+            const.MSG_CAN_RUN_AFTER_BATTLE: "can_run_after_battle",
+            const.MSG_CAN_RUN: "can_run",
         }
         while True:
             msg = self.message_queue.get()
